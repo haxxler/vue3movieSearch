@@ -1,11 +1,15 @@
-$color--black: #000;
-$color--white: #fff;
+// Required
+@import "../../node_modules/bootstrap/scss/functions";
 
-body {
-  background-color: $color--black;
-  h1{
-    color: $color--white;
-    font-size: 40px;
-    display: flex;
-  }
-}
+// Default variable overrides
+$primary: #FDC000;
+
+// Required
+@import "../../node_modules/bootstrap/scss/variables";
+@import "../../node_modules/bootstrap/scss/maps";
+@import "../../node_modules/bootstrap/scss/mixins";
+@import "../../node_modules/bootstrap/scss/root";
+
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
