@@ -3,7 +3,7 @@
   <RouterLink 
     to="/" 
     class="logo">
-    <span>OMbBAPI</span>.COM
+    <span>OMDbAPI</span>.COM
   </RouterLink>
 </template>
 
