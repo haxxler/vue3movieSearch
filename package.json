@@ -39,6 +39,7 @@
     "last 2 versions"
   ],
   "dependencies": {
-    "vue": "^3.2.36"
+    "vue": "^3.2.36",
+    "vue-router": "^4.1.4"
   }
 }
