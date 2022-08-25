@@ -1,17 +1,20 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <Headline />      
-  <Search />                                                                                                                                                                                                                                                                                                  
+  <Search />    
+  <MovieList />                                                                                                                                                                                                                                                                                              
 </template>
 
 <script>
 import Headline from '~/components/Headline'
 import Search from '~/components/Search'
+import MovieList from '~/components/Movielist'
 
 export default {
   components: {
     Headline,
-    Search
+    Search,
+    MovieList
   }
 }
 </script>

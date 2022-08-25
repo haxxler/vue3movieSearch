@@ -39,8 +39,10 @@
     "last 2 versions"
   ],
   "dependencies": {
+    "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "vue": "^3.2.36",
-    "vue-router": "^4.1.4"
+    "vue-router": "^4.1.4",
+    "vuex": "^4.0.2"
   }
 }

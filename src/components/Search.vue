@@ -35,6 +35,8 @@
 
 
 <script>
+import axios from 'axios'
+
 export default{
   data() {
     return {
@@ -65,9 +67,11 @@ export default{
       ]
     }
   },
-  methods: {
-    apply() {
-
+  methods: { 
+   async apply() { // 비동기로 동작하므로 async, await 붙여줄 것
+      const OMDB_API_KEY = '5e7c7a82'
+      const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${this.title}&type=${this.type}&y=${this.year}&page=1`)
+      console.log(res)
     }
   }
 }
