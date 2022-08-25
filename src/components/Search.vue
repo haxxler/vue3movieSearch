@@ -5,7 +5,8 @@
       v-model="title"
       class="form-control"
       type="text" 
-      placeholder="Search for Movie, Series & more" />
+      placeholder="Search for Movie, Series & more" 
+      @keyup.enter="apply" />
     <div class="selects">
       <select
         v-for="filter in filters"
@@ -23,6 +24,11 @@
           {{ item }}
         </option>
       </select>
+      <button 
+        class="btn btn-primary" 
+        @click="apply">
+        Apply
+      </button>
     </div>
   </div>
 </template>
@@ -58,6 +64,11 @@ export default{
         }
       ]
     }
+  },
+  methods: {
+    apply() {
+
+    }
   }
 }
 
@@ -82,6 +93,12 @@ export default{
         margin-right: 0;
       }
     }
+  }
+  .btn {
+    width: 120px;
+    height: 50px;
+    font-weight: 700;
+    flex-shrink: 0;
   }
 }
 </style>
