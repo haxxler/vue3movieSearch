@@ -9,5 +9,5 @@ import store from './store'
 
 createApp(App)
   .use(router)
-  .use(store)
+  .use(store) // .use 메소드는 특정한 플러그인 라이브러리를 뷰에 연결할 때 사용하는 메소드
   .mount('#app')
