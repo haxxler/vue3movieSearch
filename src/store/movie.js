@@ -1,4 +1,6 @@
 import axios from 'axios'
+import _uniqBy from 'lodash/uniqBy'
+
 
 export default {
   // index.js의 modules에 명시헤서 별개의 개념으로 활용할 수 있음
@@ -55,7 +57,7 @@ export default {
       const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=1`)
       const { Search, totalResults} = res.data;
       commit('updateState', {
-        movies: Search,
+        movies: _uniqBy(Search, 'imdbID')
         // message: 'Hello World!',
         // loading: true
       })
@@ -72,7 +74,7 @@ export default {
           const res = await axios.get(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`)
           const { Search } = res.data;
           commit('updateState', {
-            movies: [...state.movies, ...Search]
+            movies: [...state.movies, ..._uniqBy(Search, 'imdbID')]
           })
         }
       }  

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div> {{ movie.Title }} </div>
+  <div> {{ movie.imdbID }} </div>
 </template>
 
 <script>
