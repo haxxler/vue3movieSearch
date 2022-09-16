@@ -8,12 +8,12 @@ export default {
   
   // ---- data ----
   // state: function() {
-  state() {
-    return {
-      movies:[] // key - movies, value - []
-    }
-  },
-
+  // state() {
+  state: () => ({
+    movies: [],
+    message: 'Search for the movie title!',
+    loading: false
+  }),
   // ---- computed ----
   // getters: { 계산된 상태를 만들어 내는 것
   //   movieIds(state) {
@@ -21,7 +21,6 @@ export default {
   //   }
   // },
   getters: { },
-
   // ---- methods ----
   // mutations에서만 데이터를 변경하는 것이 허용된다.
   // 즉 movie.js의 state에 있는 데이터들은 mutations에서만 변경할 수 있음
@@ -36,6 +35,7 @@ export default {
         state[key] = payload[key];
       })
     },
+
     // resetMovies: function(state) {
     resetMovies(state) { // 데이터 불변성에서 문제가 생기지 않는다.
       state.movies = []
@@ -50,47 +50,64 @@ export default {
     //   context.commit
     // }
     async searchMovies({state, commit}, payload) {
-
-      // searchMovies가 payload를 입력으로 받고 payload는 
-      // title, type, number, year를 전달 
-      // 입력인자는 ...전개연산자 사용해서 전달한다.
-      // const {title, type, year, page} = payload;
-      const res = await _fetchMovies({
-        ...payload,
-        page: 1
-      });
-
-
-      const { Search, totalResults} = res.data;
+      if(state.loading) return;
+    
       commit('updateState', {
-        movies: _uniqBy(Search, 'imdbID')
-        // message: 'Hello World!',
-        // loading: true
+        message: '',
+        loading: true
       })
-      console.log(totalResults)  // 310/10 => 31
-      console.log(typeof totalResults) // string
 
-      const total = parseInt(totalResults, 10)
-      const pageLength = Math.ceil(total / 10)
+      try {
+       // searchMovies가 payload를 입력으로 받고 payload는 
+       // title, type, number, year를 전달 
+       // 입력인자는 ...전개연산자 사용해서 전달한다.
+       // const {title, type, year, page} = payload;
+        const res = await _fetchMovies({
+          ...payload,
+          page: 1
+        });
 
-      // 추가 요청 !!
-      if (pageLength >1) {
-        for (let page = 2; page <= pageLength; page+=1){
-          if (page > payload.number / 10) break;
-          const res = await _fetchMovies({
-            ...payload,
-            //page: page,
-            page
-          });
-          const { Search } = res.data;
-          commit('updateState', {
-            movies: [
-              ...state.movies, 
-              ..._uniqBy(Search, 'imdbID')
-            ]
-          })
-        }
-      }  
+        const { Search, totalResults} = res.data;
+        commit('updateState', {
+          movies: _uniqBy(Search, 'imdbID')
+         // message: 'Hello World!',
+         // loading: true
+        })
+        console.log(totalResults)  // 310/10 => 31
+        console.log(typeof totalResults) // string
+
+        const total = parseInt(totalResults, 10)
+        const pageLength = Math.ceil(total / 10)
+
+       // 추가 요청 !!
+        if (pageLength >1) {
+          for (let page = 2; page <= pageLength; page+=1){
+            if (page > payload.number / 10) break;
+            const res = await _fetchMovies({
+              ...payload,
+             //page: page,
+              page
+            });
+            const { Search } = res.data;
+            commit('updateState', {
+              movies: [
+                ...state.movies, 
+                ..._uniqBy(Search, 'imdbID')
+              ]
+            })
+          }
+        }  
+      } catch(message) {
+        commit('updateState', {
+          movies: [],
+          message: message
+        }) 
+      } finally {
+        commit('updateState', {
+          loading: false
+        })
+      }
+
     }
   }
 }
@@ -103,7 +120,12 @@ function _fetchMovies(payload) {
 
   return new Promise((resolve,reject) => {
     axios.get(url) // axios.get이 반환하는 값을 생각할 것 !!!
-    .then(res => resolve(res))
+    .then(res => {
+      if (res.data.Error) {
+        reject(res.data.Error);
+      }
+      resolve(res)
+    })
     .catch(err => reject(err.message))
   })
 
